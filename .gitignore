@@ -1,0 +1,21 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+.venv/
+venv/
+env/
+
+*.pt
+*.pth
+*.ckpt
+
+autoencoder_task/.mplconfig/
+pca_image_task/.mplconfig/
+
+# Later tasks are kept out of the first AutoEncoder commit.
+pca_image_task/
+
+autoencoder_task/checkpoints/*
+!autoencoder_task/checkpoints/.gitkeep
