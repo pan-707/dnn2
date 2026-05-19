@@ -10,11 +10,13 @@ env/
 *.pt
 *.pth
 *.ckpt
+*.npz
 
 autoencoder_task/.mplconfig/
 pca_image_task/.mplconfig/
+pca_feature_task/.mplconfig/
 
-# Later tasks are kept out of the first AutoEncoder commit.
+# Old local scratch files for an earlier PCA attempt.
 pca_image_task/
 
 autoencoder_task/checkpoints/*
