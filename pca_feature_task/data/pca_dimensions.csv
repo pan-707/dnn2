@@ -1,0 +1,5 @@
+representation,dimension,explained_variance_ratio_sum
+4096dim,4096,1.000000
+pca95,304,0.950124
+pca90,209,0.900234
+pca128,128,0.828331

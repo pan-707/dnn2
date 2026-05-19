@@ -1,0 +1,61 @@
+representation,k,cluster,size,top_classes
+4096dim,5,0,3,horse:3
+4096dim,5,1,33,cat:10 / deer:6 / bird:5
+4096dim,5,2,25,bird:7 / horse:7 / deer:5
+4096dim,5,3,8,ship:4 / airplane:3 / bird:1
+4096dim,5,4,31,automobile:16 / truck:12 / cat:1
+4096dim,10,0,2,horse:2
+4096dim,10,1,13,cat:4 / frog:4 / bird:2
+4096dim,10,2,6,ship:4 / airplane:1 / bird:1
+4096dim,10,3,20,bird:7 / deer:4 / cat:3
+4096dim,10,4,10,truck:7 / frog:1 / automobile:1
+4096dim,10,5,11,automobile:9 / truck:2
+4096dim,10,6,17,automobile:6 / truck:3 / cat:3
+4096dim,10,7,18,deer:7 / horse:6 / bird:3
+4096dim,10,8,1,cat:1
+4096dim,10,9,2,airplane:2
+pca95,5,0,3,horse:3
+pca95,5,1,32,cat:9 / deer:6 / bird:5
+pca95,5,2,25,bird:7 / horse:7 / deer:5
+pca95,5,3,7,ship:4 / airplane:2 / bird:1
+pca95,5,4,33,automobile:16 / truck:12 / airplane:2
+pca95,10,0,2,horse:2
+pca95,10,1,12,frog:4 / cat:3 / bird:2
+pca95,10,2,6,ship:4 / airplane:1 / bird:1
+pca95,10,3,20,bird:7 / deer:4 / cat:3
+pca95,10,4,8,truck:6 / automobile:1 / cat:1
+pca95,10,5,11,automobile:9 / truck:2
+pca95,10,6,17,automobile:6 / truck:3 / airplane:3
+pca95,10,7,15,deer:6 / horse:5 / bird:3
+pca95,10,8,1,cat:1
+pca95,10,9,8,cat:2 / horse:2 / deer:1
+pca90,5,0,3,horse:3
+pca90,5,1,32,cat:9 / deer:6 / bird:5
+pca90,5,2,25,bird:7 / horse:7 / deer:5
+pca90,5,3,8,ship:4 / airplane:3 / bird:1
+pca90,5,4,32,automobile:16 / truck:12 / cat:2
+pca90,10,0,1,airplane:1
+pca90,10,1,5,cat:4 / dog:1
+pca90,10,2,18,cat:5 / horse:3 / airplane:2
+pca90,10,3,2,deer:2
+pca90,10,4,11,automobile:7 / truck:3 / airplane:1
+pca90,10,5,12,bird:5 / horse:4 / dog:2
+pca90,10,6,9,ship:4 / airplane:2 / cat:1
+pca90,10,7,15,truck:8 / automobile:6 / deer:1
+pca90,10,8,7,deer:3 / horse:3 / bird:1
+pca90,10,9,20,deer:5 / frog:5 / bird:5
+pca128,5,0,16,bird:7 / deer:3 / cat:2
+pca128,5,1,26,cat:9 / frog:5 / dog:5
+pca128,5,2,18,horse:9 / deer:7 / bird:2
+pca128,5,3,23,automobile:9 / truck:4 / ship:4
+pca128,5,4,17,truck:8 / automobile:7 / cat:1
+pca128,10,0,3,horse:3
+pca128,10,1,21,cat:6 / frog:5 / dog:5
+pca128,10,2,24,deer:11 / horse:5 / bird:5
+pca128,10,3,9,bird:4 / horse:2 / dog:2
+pca128,10,4,11,truck:7 / cat:2 / automobile:1
+pca128,10,5,12,ship:4 / truck:2 / automobile:2
+pca128,10,6,1,cat:1
+pca128,10,7,3,airplane:2 / truck:1
+pca128,10,8,8,automobile:6 / truck:1 / airplane:1
+pca128,10,9,8,automobile:7 / truck:1
