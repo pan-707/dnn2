@@ -1,0 +1,16 @@
+k,cluster,size,top_classes
+5,0,195,airplane:36 / bird:30 / dog:28
+5,1,134,frog:29 / cat:22 / automobile:18
+5,2,227,ship:63 / truck:61 / airplane:28
+5,3,78,airplane:22 / ship:11 / cat:7
+5,4,366,frog:60 / cat:50 / horse:45
+10,0,111,truck:38 / ship:26 / airplane:15
+10,1,76,ship:29 / airplane:17 / truck:10
+10,2,124,frog:32 / deer:23 / dog:20
+10,3,40,airplane:11 / automobile:5 / frog:4
+10,4,89,frog:20 / cat:14 / automobile:13
+10,5,119,truck:22 / deer:16 / automobile:16
+10,6,139,horse:23 / bird:22 / airplane:17
+10,7,72,airplane:23 / ship:16 / bird:13
+10,8,110,cat:23 / dog:19 / automobile:17
+10,9,120,cat:22 / frog:20 / horse:18
