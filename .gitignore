@@ -16,6 +16,7 @@ autoencoder_task/.mplconfig/
 pca_image_task/.mplconfig/
 pca_feature_task/.mplconfig/
 segmentation_task/.mplconfig/
+detection_task/.mplconfig/
 
 # Old local scratch files for an earlier PCA attempt.
 pca_image_task/
