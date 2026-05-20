@@ -1,0 +1,13 @@
+model,image,detections_over_threshold,top_detections
+fasterrcnn,262993_z.jpg,5,car:1.00 / suitcase:0.99 / car:0.99 / car:0.98 / suitcase:0.98
+fasterrcnn,COCO_train2014_000000000009.jpg,5,broccoli:0.99 / bowl:0.99 / bowl:0.90 / bowl:0.85 / orange:0.84
+fasterrcnn,COCO_train2014_000000000025.jpg,2,giraffe:1.00 / giraffe:0.99
+fasterrcnn,COCO_train2014_000000000030.jpg,2,vase:0.99 / potted plant:0.88
+fasterrcnn,COCO_train2014_000000000034.jpg,1,zebra:1.00
+fasterrcnn,COCO_train2014_000000000036.jpg,3,umbrella:1.00 / person:1.00 / umbrella:0.64
+ssdlite,262993_z.jpg,5,car:0.99 / car:0.98 / suitcase:0.62 / car:0.56 / suitcase:0.48
+ssdlite,COCO_train2014_000000000009.jpg,4,bowl:0.88 / bowl:0.88 / broccoli:0.84 / bowl:0.60
+ssdlite,COCO_train2014_000000000025.jpg,1,giraffe:0.98
+ssdlite,COCO_train2014_000000000030.jpg,2,vase:0.87 / vase:0.45
+ssdlite,COCO_train2014_000000000034.jpg,1,zebra:0.99
+ssdlite,COCO_train2014_000000000036.jpg,2,umbrella:0.93 / person:0.92
