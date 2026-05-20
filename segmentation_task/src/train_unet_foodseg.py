@@ -20,124 +20,100 @@ ROOT = Path(__file__).resolve().parents[1]
 FIG_DIR = ROOT / "figures"
 DATA_DIR = ROOT / "data"
 CKPT_DIR = ROOT / "checkpoints"
+IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".bmp"]
 
-VOC_CLASSES = [
-    "background",
-    "aeroplane",
-    "bicycle",
-    "bird",
-    "boat",
-    "bottle",
-    "bus",
-    "car",
-    "cat",
-    "chair",
-    "cow",
-    "diningtable",
-    "dog",
-    "horse",
-    "motorbike",
-    "person",
-    "pottedplant",
-    "sheep",
-    "sofa",
-    "train",
-    "tvmonitor",
-]
 
-VOC_COLORS = np.array(
-    [
-        [0, 0, 0],
-        [128, 0, 0],
-        [0, 128, 0],
-        [128, 128, 0],
-        [0, 0, 128],
-        [128, 0, 128],
-        [0, 128, 128],
-        [128, 128, 128],
-        [64, 0, 0],
-        [192, 0, 0],
-        [64, 128, 0],
-        [192, 128, 0],
-        [64, 0, 128],
-        [192, 0, 128],
-        [64, 128, 128],
-        [192, 128, 128],
-        [0, 64, 0],
-        [128, 64, 0],
-        [0, 192, 0],
-        [128, 192, 0],
-        [0, 64, 128],
-    ],
-    dtype=np.uint8,
-)
+def make_palette(num_classes):
+    rng = np.random.default_rng(7)
+    colors = rng.integers(30, 230, size=(num_classes, 3), dtype=np.uint8)
+    colors[0] = np.array([0, 0, 0], dtype=np.uint8)
+    return colors
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Train a small UNet on PASCAL VOC segmentation masks.")
-    parser.add_argument("--voc-root", type=Path, default=Path("/export/data/dataset/VOCdevkit/VOC2012"))
+    parser = argparse.ArgumentParser(description="Train a small UNet on FoodSeg103 masks.")
+    parser.add_argument("--data-root", type=Path, default=Path("/export/data/dataset/FoodSeg103"))
     parser.add_argument("--epochs", type=int, default=8)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--image-size", type=int, default=128)
     parser.add_argument("--train-limit", type=int, default=800)
     parser.add_argument("--val-limit", type=int, default=200)
+    parser.add_argument("--num-classes", type=int, default=104)
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--seed", type=int, default=7)
     return parser.parse_args()
 
 
-def read_split(voc_root, split):
-    split_file = voc_root / "ImageSets" / "Segmentation" / f"{split}.txt"
+def read_ids(data_root, split):
+    split_file = data_root / "ImageSets" / f"{split}.txt"
     if split_file.exists():
-        return [line.strip() for line in split_file.read_text().splitlines() if line.strip()]
+        ids = []
+        for line in split_file.read_text().splitlines():
+            line = line.strip()
+            if line:
+                ids.append(Path(line).stem)
+        return ids
 
-    mask_dir = voc_root / "SegmentationClass"
-    ids = sorted(path.stem for path in mask_dir.glob("*.png"))
-    cut = int(len(ids) * 0.8)
-    return ids[:cut] if split == "train" else ids[cut:]
+    image_dir = data_root / "Images" / "img_dir" / split
+    return sorted(path.stem for path in image_dir.iterdir() if path.suffix.lower() in IMAGE_EXTENSIONS)
 
 
-class VOCDataset(Dataset):
-    def __init__(self, voc_root, split, image_size=128, limit=0):
-        self.voc_root = Path(voc_root)
-        self.image_dir = self.voc_root / "JPEGImages"
-        self.mask_dir = self.voc_root / "SegmentationClass"
+def find_with_extensions(directory, stem):
+    for ext in IMAGE_EXTENSIONS:
+        path = directory / f"{stem}{ext}"
+        if path.exists():
+            return path
+    return None
+
+
+class FoodSegDataset(Dataset):
+    def __init__(self, data_root, split, image_size=128, limit=0):
+        self.data_root = Path(data_root)
+        self.image_dir = self.data_root / "Images" / "img_dir" / split
+        self.mask_dir = self.data_root / "Images" / "ann_dir" / split
         if not self.image_dir.exists() or not self.mask_dir.exists():
             raise FileNotFoundError(
-                f"VOC root must contain JPEGImages and SegmentationClass: {self.voc_root}"
+                "FoodSeg103 root must contain Images/img_dir/{split} and "
+                f"Images/ann_dir/{split}: {self.data_root}"
             )
 
-        ids = read_split(self.voc_root, split)
-        ids = [
-            image_id
-            for image_id in ids
-            if (self.image_dir / f"{image_id}.jpg").exists()
-            and (self.mask_dir / f"{image_id}.png").exists()
-        ]
+        pairs = []
+        for image_id in read_ids(self.data_root, split):
+            image_path = find_with_extensions(self.image_dir, image_id)
+            mask_path = find_with_extensions(self.mask_dir, image_id)
+            if image_path is not None and mask_path is not None:
+                pairs.append((image_path, mask_path))
+
         if limit > 0:
-            ids = ids[:limit]
-        if not ids:
-            raise RuntimeError(f"No VOC segmentation samples found for split={split}.")
-        self.ids = ids
+            pairs = pairs[:limit]
+        if not pairs:
+            raise RuntimeError(f"No FoodSeg103 samples found for split={split}.")
+
+        self.pairs = pairs
         self.image_size = image_size
         self.image_transform = transforms.Compose(
             [
-                transforms.Resize((image_size, image_size), interpolation=transforms.InterpolationMode.BILINEAR),
+                transforms.Resize(
+                    (image_size, image_size),
+                    interpolation=transforms.InterpolationMode.BILINEAR,
+                ),
                 transforms.ToTensor(),
             ]
         )
 
     def __len__(self):
-        return len(self.ids)
+        return len(self.pairs)
 
     def __getitem__(self, index):
-        image_id = self.ids[index]
-        image = Image.open(self.image_dir / f"{image_id}.jpg").convert("RGB")
-        mask = Image.open(self.mask_dir / f"{image_id}.png")
+        image_path, mask_path = self.pairs[index]
+        image = Image.open(image_path).convert("RGB")
+        mask = Image.open(mask_path)
         image = self.image_transform(image)
         mask = mask.resize((self.image_size, self.image_size), Image.Resampling.NEAREST)
-        mask = torch.from_numpy(np.array(mask, dtype=np.int64))
-        return image, mask
+        mask_array = np.array(mask, dtype=np.int64)
+        if mask_array.ndim == 3:
+            mask_array = mask_array[:, :, 0]
+        return image, torch.from_numpy(mask_array)
 
 
 class DoubleConv(nn.Module):
@@ -157,7 +133,7 @@ class DoubleConv(nn.Module):
 
 
 class UNetSmall(nn.Module):
-    def __init__(self, num_classes=21):
+    def __init__(self, num_classes):
         super().__init__()
         self.down1 = DoubleConv(3, 32)
         self.pool1 = nn.MaxPool2d(2)
@@ -181,6 +157,16 @@ class UNetSmall(nn.Module):
         return self.out(x)
 
 
+def infer_num_classes(dataset, default_num_classes, max_samples=80):
+    max_label = 0
+    for index in range(min(len(dataset), max_samples)):
+        _, mask = dataset[index]
+        valid = mask[mask != 255]
+        if valid.numel() > 0:
+            max_label = max(max_label, int(valid.max().item()))
+    return max(default_num_classes, max_label + 1)
+
+
 def pixel_accuracy(logits, target):
     pred = logits.argmax(dim=1)
     valid = target != 255
@@ -189,7 +175,7 @@ def pixel_accuracy(logits, target):
     return correct / total
 
 
-def mean_iou(logits, target, num_classes=21):
+def mean_iou(logits, target, num_classes):
     pred = logits.argmax(dim=1)
     valid = target != 255
     ious = []
@@ -205,7 +191,7 @@ def mean_iou(logits, target, num_classes=21):
     return torch.stack(ious).mean()
 
 
-def evaluate(model, loader, criterion, device):
+def evaluate(model, loader, criterion, device, num_classes):
     model.eval()
     total_loss = 0.0
     total_acc = 0.0
@@ -220,16 +206,16 @@ def evaluate(model, loader, criterion, device):
             batch_size = images.size(0)
             total_loss += float(loss.item()) * batch_size
             total_acc += float(pixel_accuracy(logits, masks).item()) * batch_size
-            total_miou += float(mean_iou(logits, masks).item()) * batch_size
+            total_miou += float(mean_iou(logits, masks, num_classes).item()) * batch_size
             seen += batch_size
     return total_loss / seen, total_acc / seen, total_miou / seen
 
 
-def colorize_mask(mask):
+def colorize_mask(mask, palette):
     mask = np.asarray(mask)
     colored = np.zeros((*mask.shape, 3), dtype=np.uint8)
-    valid = (mask >= 0) & (mask < len(VOC_COLORS))
-    colored[valid] = VOC_COLORS[mask[valid]]
+    valid = (mask >= 0) & (mask < len(palette))
+    colored[valid] = palette[mask[valid]]
     return colored
 
 
@@ -253,7 +239,7 @@ def save_training_curve(history):
     plt.close(fig)
 
 
-def save_predictions(model, loader, device):
+def save_predictions(model, loader, device, palette):
     model.eval()
     images, masks = next(iter(loader))
     images = images[:6].to(device)
@@ -265,8 +251,8 @@ def save_predictions(model, loader, device):
     fig, axes = plt.subplots(4, 6, figsize=(12, 8))
     for i in range(6):
         image = np.transpose(images[i], (1, 2, 0))
-        gt = colorize_mask(masks[i])
-        pred = colorize_mask(preds[i])
+        gt = colorize_mask(masks[i], palette)
+        pred = colorize_mask(preds[i], palette)
         overlay = (0.55 * image + 0.45 * (pred.astype(np.float32) / 255.0)).clip(0, 1)
 
         axes[0, i].imshow(image)
@@ -295,17 +281,20 @@ def main():
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"device: {device}")
-    print(f"voc_root: {args.voc_root}")
+    print(f"data_root: {args.data_root}")
 
-    train_dataset = VOCDataset(args.voc_root, "train", args.image_size, args.train_limit)
-    val_dataset = VOCDataset(args.voc_root, "val", args.image_size, args.val_limit)
+    train_dataset = FoodSegDataset(args.data_root, "train", args.image_size, args.train_limit)
+    val_dataset = FoodSegDataset(args.data_root, "test", args.image_size, args.val_limit)
+    num_classes = infer_num_classes(train_dataset, args.num_classes)
+    palette = make_palette(num_classes)
     print(f"train samples: {len(train_dataset)}")
     print(f"val samples: {len(val_dataset)}")
+    print(f"num_classes: {num_classes}")
 
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2)
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
 
-    model = UNetSmall(num_classes=len(VOC_CLASSES)).to(device)
+    model = UNetSmall(num_classes=num_classes).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     criterion = nn.CrossEntropyLoss(ignore_index=255)
     history = []
@@ -327,7 +316,7 @@ def main():
             seen += batch_size
 
         train_loss = running_loss / seen
-        val_loss, val_acc, val_miou = evaluate(model, val_loader, criterion, device)
+        val_loss, val_acc, val_miou = evaluate(model, val_loader, criterion, device, num_classes)
         row = {
             "epoch": epoch,
             "train_loss": train_loss,
@@ -341,7 +330,7 @@ def main():
             f"val_loss={val_loss:.4f} val_pixel_acc={val_acc:.4f} val_miou={val_miou:.4f}"
         )
 
-    torch.save(model.state_dict(), CKPT_DIR / "unet_voc.pt")
+    torch.save(model.state_dict(), CKPT_DIR / "unet_foodseg103.pt")
     with (DATA_DIR / "training_metrics.csv").open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
@@ -351,7 +340,7 @@ def main():
         writer.writerows(history)
 
     save_training_curve(history)
-    save_predictions(model, val_loader, device)
+    save_predictions(model, val_loader, device, palette)
     print(f"saved: {DATA_DIR / 'training_metrics.csv'}")
     print(f"saved: {FIG_DIR / 'training_curve.png'}")
     print(f"saved: {FIG_DIR / 'predictions.png'}")

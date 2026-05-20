@@ -1,6 +1,6 @@
 # Step 03: Segmentation
 
-第3題では、研究室サーバ上のPASCAL VOC形式データセットを使ってUNetを学習します。
+第3題では、研究室サーバ上のFoodSeg103を使ってUNetを学習します。
 
 ## 1. 最新版を取得
 
@@ -9,25 +9,18 @@ cd /export/space0/pan-p/projects/dnn2
 git pull
 ```
 
-## 2. VOCデータセットの場所を探す
+## 2. FoodSeg103の場所を確認する
 
 ```bash
-find /export -maxdepth 6 -type d -name SegmentationClass 2>/dev/null
+find /export/data/dataset/FoodSeg103 -maxdepth 3 -type d
+find /export/data/dataset/FoodSeg103 -maxdepth 3 -type f | head -20
 ```
-
-出力例:
-
-```text
-/export/data/dataset/VOCdevkit/VOC2012/SegmentationClass
-```
-
-この場合、VOC rootは `/export/data/dataset/VOCdevkit/VOC2012` です。
 
 ## 3. 実行する
 
 ```bash
 chmod +x segmentation_task/run_server.sh
-./segmentation_task/run_server.sh /export/data/dataset/VOCdevkit/VOC2012
+./segmentation_task/run_server.sh /export/data/dataset/FoodSeg103
 ```
 
 ## 4. 結果を確認する

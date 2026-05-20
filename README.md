@@ -72,11 +72,11 @@ chmod +x pca_feature_task/run_server.sh
 
 ## Task 3: Segmentation
 
-研究室サーバ上のPASCAL VOC形式データセットを使い、小さなUNetでsemantic segmentationを行います。
+研究室サーバ上のFoodSeg103を使い、小さなUNetでsemantic segmentationを行います。
 
 ```bash
 chmod +x segmentation_task/run_server.sh
-./segmentation_task/run_server.sh /export/data/dataset/VOCdevkit/VOC2012
+./segmentation_task/run_server.sh /export/data/dataset/FoodSeg103
 ```
 
 生成される主なファイル:
