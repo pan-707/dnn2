@@ -1,0 +1,8 @@
+formula,expected,top1,top1_score,top_results,hit_top5
+king - man + woman,queen,queen,0.852360,queen:0.8524 / throne:0.7664 / prince:0.7592 / daughter:0.7474 / elizabeth:0.7460,True
+brother - man + woman,sister,daughter,0.932332,daughter:0.9323 / wife:0.9054 / cousin:0.9009 / father:0.8941 / mother:0.8854,False
+paris - france + japan,tokyo,tokyo,0.923445,tokyo:0.9234 / shanghai:0.8370 / japanese:0.7904 / osaka:0.7831 / beijing:0.7480,True
+rome - italy + france,paris,paris,0.858185,paris:0.8582 / prohertrib:0.7304 / vienna:0.7211 / french:0.7168 / saint:0.7058,True
+berlin - germany + italy,rome,rome,0.866267,rome:0.8663 / venice:0.8431 / lisbon:0.7588 / naples:0.7559 / turin:0.7534,True
+better - good + bad,worse,worse,0.901099,worse:0.9011 / too:0.8324 / unfortunately:0.8224 / because:0.8179 / hurt:0.8156,True
+bigger - big + small,smaller,larger,0.923784,larger:0.9238 / smaller:0.8849 / large:0.8840 / normally:0.7848 / typically:0.7812,True

@@ -1,0 +1,6 @@
+query,nearest
+king,prince:0.8236 / queen:0.7839 / ii:0.7746 / emperor:0.7736 / son:0.7667
+japan,japanese:0.8822 / china:0.8429 / korea:0.8155 / tokyo:0.8079 / taiwan:0.7847
+computer,computers:0.9165 / software:0.8815 / technology:0.8526 / electronic:0.8126 / internet:0.8060
+food,products:0.7985 / coffee:0.7853 / supplies:0.7699 / meat:0.7693 / foods:0.7518
+music,musical:0.8854 / pop:0.8682 / dance:0.8531 / songs:0.8526 / recording:0.8392
