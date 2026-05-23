@@ -1,5 +1,7 @@
 # DNN実践課題2 統合レポート
 
+GitHubリポジトリ: https://github.com/pan-707/dnn2
+
 ## はじめに
 
 本レポートでは、DNN実践課題2で扱った7つのテーマについて、実装した内容と実験結果をまとめる。課題は、AutoEncoder、PCAによるDCNN特徴の次元削減、semantic segmentation、物体検出、Word2Vec、Vision Transformer、画像キャプション生成である。画像の復元、分類、検出、文生成など、入力と出力の形式が異なる課題を順番に試すことで、深層学習モデルがどのように特徴を表現し、別のタスクへ利用されるかを確認した。
