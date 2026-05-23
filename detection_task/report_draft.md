@@ -6,7 +6,7 @@
 
 ## 2. 方法
 
-入力画像には研究室サーバ上のCOCOデータセットの画像を用いた。モデルには、torchvisionで提供されているCOCO事前学習済みのFaster R-CNN ResNet-50 FPNとSSDLite MobileNetV3を用いた。スコア閾値は0.45とし、各画像につき上位の検出結果を可視化した。
+入力画像には研究室サーバ上のCOCOデータセットの画像を用いた。COCOはコピーせず、`ln -s /export/data/dataset/COCO` でプロジェクト内に作成したシンボリックリンクから参照した。モデルには、torchvisionで提供されているCOCO事前学習済みのFaster R-CNN ResNet-50 FPNとSSDLite MobileNetV3を用いた。スコア閾値は0.45とし、各画像につき上位の検出結果を可視化した。
 
 Faster R-CNNはtwo-stage detectorであり、まず候補領域を生成し、その後で各候補を分類・回帰する。これに対してSSD系のモデルはone-stage detectorであり、特徴マップ上でbounding boxとカテゴリを直接予測する。一般には、Faster R-CNNは精度寄り、SSDは速度寄りの設計である。
 

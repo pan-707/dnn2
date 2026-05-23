@@ -113,7 +113,8 @@ Pre-trained Faster R-CNNとSSDLiteでCOCO画像の物体検出を行います。
 
 ```bash
 chmod +x detection_task/run_server.sh
-./detection_task/run_server.sh /export/data/dataset/COCO
+ln -s /export/data/dataset/COCO COCO
+./detection_task/run_server.sh
 ```
 
 生成される主なファイル:
@@ -157,7 +158,8 @@ COCO captionを使って、CNN encoder + LSTM decoderによる画像キャプシ
 
 ```bash
 chmod +x caption_task/run_server.sh
-./caption_task/run_server.sh /export/data/dataset/COCO
+ln -s /export/data/dataset/COCO COCO
+./caption_task/run_server.sh
 ```
 
 生成される主なファイル:

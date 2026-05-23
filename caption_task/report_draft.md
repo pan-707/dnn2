@@ -8,7 +8,7 @@
 
 画像特徴の抽出にはImageNetで事前学習済みのResNet-18を用いた。ResNet-18の畳み込み部分で画像特徴を取り出し、全結合層でLSTMに入力する埋め込み次元へ変換した。decoderにはLSTMを用い、画像特徴を最初の入力として与え、その後に単語列を順に入力して次の単語を予測した。
 
-データセットには研究室サーバ上のCOCO caption annotationを用いた。captionを小文字化し、英数字のtokenに分割して語彙を作成した。学習には5000個のimage-caption pairを用い、5 epoch学習した。損失関数にはCrossEntropyLossを用いた。
+データセットには研究室サーバ上のCOCO caption annotationを用いた。COCOはコピーせず、課題の指示通り `ln -s /export/data/dataset/COCO` でプロジェクト内にシンボリックリンクを作成して参照した。captionを小文字化し、英数字のtokenに分割して語彙を作成した。学習には5000個のimage-caption pairを用い、5 epoch学習した。損失関数にはCrossEntropyLossを用いた。
 
 ## 3. 結果
 

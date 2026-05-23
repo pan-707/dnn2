@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-IMAGE_ROOT="${1:-/export/data/dataset/COCO}"
+IMAGE_ROOT="${1:-COCO}"
 export MPLCONFIGDIR="${MPLCONFIGDIR:-$PWD/detection_task/.mplconfig}"
 export MPLBACKEND="${MPLBACKEND:-Agg}"
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"

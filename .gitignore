@@ -21,6 +21,7 @@ word2vec_task/models/*
 !word2vec_task/models/.gitkeep
 vit_task/.mplconfig/
 caption_task/.mplconfig/
+COCO
 
 # Old local scratch files for an earlier PCA attempt.
 pca_image_task/
