@@ -20,6 +20,7 @@ detection_task/.mplconfig/
 word2vec_task/models/*
 !word2vec_task/models/.gitkeep
 vit_task/.mplconfig/
+caption_task/.mplconfig/
 
 # Old local scratch files for an earlier PCA attempt.
 pca_image_task/
@@ -30,3 +31,5 @@ segmentation_task/checkpoints/*
 !segmentation_task/checkpoints/.gitkeep
 vit_task/checkpoints/*
 !vit_task/checkpoints/.gitkeep
+caption_task/checkpoints/*
+!caption_task/checkpoints/.gitkeep
